@@ -1,125 +1,143 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ramlee Barbecue Menu</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background: #fafafa; }
-    h1, h2 { text-align: center; }
-    .menu, .cart { max-width: 600px; margin: 20px auto; }
-    .item { display: flex; justify-content: space-between; padding: 10px; background: #fff; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
-    button { background: #ff6600; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
-    button:hover { background: #e65c00; }
-    .cart-items { background: #fff; padding: 10px; border-radius: 8px; margin-top: 20px; }
-    .checkout { margin-top: 20px; text-align: center; }
-    input, textarea { width: 100%; margin-bottom: 10px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramlee Barbecue</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 0; background: #fafafa; color: #333; }
+header { background: #111; color: #fff; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+header h1 { margin: 0; }
+nav a { color: #fff; margin-left: 1rem; text-decoration: none; }
+.container { width: 90%; max-width: 900px; margin: 2rem auto; }
+section { margin-bottom: 2rem; }
+.menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; }
+.menu-item { background: #fff; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
+.menu-item img { width: 100%; height: 150px; object-fit: cover; border-radius: 6px; }
+button { padding: 0.5rem 1rem; background: #ff6600; color: #fff; border: none; border-radius: 6px; cursor: pointer; margin-top: 0.5rem; }
+button:hover { background: #e65c00; }
+.cart { background: #fff; padding: 1rem; border-radius: 8px; }
+.cart-items { margin-bottom: 1rem; }
+input { width: 100%; margin-bottom: 10px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
+.button { display: inline-block; background: #28a745; color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; margin-top: 10px; }
+.button:hover { background: #218838; }
+</style>
 </head>
 <body>
+
+<header>
   <h1>Ramlee Barbecue</h1>
-  <h2>Menu</h2>
-  <div class="menu">
-    <div class="item">
-      <span>Chicken BBQ - $5</span>
-      <button onclick="addToCart('Chicken BBQ', 5)">Add</button>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#menu">Menu</a>
+    <a href="#cart">Cart</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <!-- Home Section -->
+  <section id="home">
+    <h2>Welcome to Ramlee Barbecue!</h2>
+    <p>Delicious BBQ meals ready for pickup.</p>
+    <a class="button" href="#menu">Order Now</a>
+  </section>
+
+  <!-- Menu Section -->
+  <section id="menu">
+    <h2>Our Menu</h2>
+    <div class="menu" id="menuList">
+      <!-- Menu items inserted via JS -->
     </div>
-    <div class="item">
-      <span>Lamb BBQ - $8</span>
-      <button onclick="addToCart('Lamb BBQ', 8)">Add</button>
-    </div>
-    <div class="item">
-      <span>Beef BBQ - $7</span>
-      <button onclick="addToCart('Beef BBQ', 7)">Add</button>
-    </div>
-    <div class="item">
-      <span>Drinks - $2</span>
-      <button onclick="addToCart('Drinks', 2)">Add</button>
-    </div>
-  </div>
+  </section>
 
-  <h2>Your Cart</h2>
-  <div class="cart">
-    <div id="cartItems" class="cart-items"></div>
-    <div class="checkout">
-      <h3>Customer Info</h3>
-      <input type="text" id="custName" placeholder="Your Name" required>
-      <input type="text" id="custPhone" placeholder="Your Phone" required>
-      <input type="time" id="pickupTime" required>
-      <button onclick="checkout()">Checkout via WhatsApp</button>
-    </div>
-  </div>
+  <!-- Cart Section -->
+  <section id="cart" class="cart">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <h3>Customer Info</h3>
+    <input type="text" id="custName" placeholder="Your Name" required>
+    <input type="text" id="custPhone" placeholder="Your Phone" required>
+    <input type="time" id="pickupTime" required>
+    <button onclick="checkout()">Checkout via WhatsApp</button>
+  </section>
 
-  <script>
-    const WHATSAPP_NUMBER = "6738121098"; // <--- put your number here (e.g. 6738123456)
+</main>
 
-    let cart = [];
+<script>
+const WHATSAPP_NUMBER = "6738121098"; // Replace with your number
 
-    function addToCart(item, price) {
-      const existing = cart.find(i => i.name === item);
-      if (existing) {
-        existing.qty++;
-      } else {
-        cart.push({ name: item, price: price, qty: 1 });
-      }
-      renderCart();
-    }
+const menuItems = [
+  { id: 1, name: "Chicken BBQ", price: 5, img: "https://via.placeholder.com/200x150?text=Chicken+BBQ" },
+  { id: 2, name: "Beef BBQ", price: 7, img: "https://via.placeholder.com/200x150?text=Beef+BBQ" },
+  { id: 3, name: "Lamb BBQ", price: 8, img: "https://via.placeholder.com/200x150?text=Lamb+BBQ" },
+  { id: 4, name: "Drinks", price: 2, img: "https://via.placeholder.com/200x150?text=Drinks" }
+];
 
-    function renderCart() {
-      const cartDiv = document.getElementById("cartItems");
-      cartDiv.innerHTML = "";
-      let total = 0;
+let cart = [];
 
-      cart.forEach((item, index) => {
-        total += item.price * item.qty;
-        cartDiv.innerHTML += `
-          <div>
-            ${item.name} x ${item.qty} = $${item.price * item.qty}
-            <button onclick="removeItem(${index})">-</button>
-          </div>
-        `;
-      });
+function renderMenu(){
+  const menuList = document.getElementById("menuList");
+  menuList.innerHTML = "";
+  menuItems.forEach(item=>{
+    const div = document.createElement("div");
+    div.classList.add("menu-item");
+    div.innerHTML = `
+      <img src="${item.img}" alt="${item.name}">
+      <h3>${item.name}</h3>
+      <p>BND ${item.price}</p>
+      <button onclick="addToCart(${item.id})">Add to Cart</button>
+    `;
+    menuList.appendChild(div);
+  });
+}
 
-      if (cart.length > 0) {
-        cartDiv.innerHTML += `<hr><strong>Total: $${total}</strong>`;
-      } else {
-        cartDiv.innerHTML = "<em>Cart is empty</em>";
-      }
-    }
+function addToCart(id){
+  const item = menuItems.find(i=>i.id===id);
+  const existing = cart.find(i=>i.id===id);
+  if(existing) existing.qty++;
+  else cart.push({...item, qty:1});
+  renderCart();
+}
 
-    function removeItem(index) {
-      if (cart[index].qty > 1) {
-        cart[index].qty--;
-      } else {
-        cart.splice(index, 1);
-      }
-      renderCart();
-    }
+function renderCart(){
+  const cartDiv = document.getElementById("cartItems");
+  cartDiv.innerHTML="";
+  let total=0;
+  cart.forEach((item,index)=>{
+    total += item.price*item.qty;
+    cartDiv.innerHTML += `<div>${item.name} x ${item.qty} = BND ${(item.price*item.qty).toFixed(2)} <button onclick="removeItem(${index})">-</button></div>`;
+  });
+  if(cart.length) cartDiv.innerHTML += `<hr><strong>Total: BND ${total.toFixed(2)}</strong>`;
+  else cartDiv.innerHTML = "<em>Cart is empty</em>";
+}
 
-    function checkout() {
-      if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-      }
-      let name = document.getElementById("custName").value;
-      let phone = document.getElementById("custPhone").value;
-      let time = document.getElementById("pickupTime").value;
+function removeItem(index){
+  if(cart[index].qty>1) cart[index].qty--;
+  else cart.splice(index,1);
+  renderCart();
+}
 
-      if (!name || !phone || !time) {
-        alert("Please fill in your details");
-        return;
-      }
+function checkout(){
+  if(cart.length===0){ alert("Cart is empty!"); return; }
+  const name = document.getElementById("custName").value;
+  const phone = document.getElementById("custPhone").value;
+  const time = document.getElementById("pickupTime").value;
+  if(!name || !phone || !time){ alert("Fill all details!"); return; }
 
-      let orderText = `New Order from ${name}%0APhone: ${phone}%0APickup Time: ${time}%0A%0AOrder:%0A`;
-      cart.forEach(item => {
-        orderText += `${item.name} x ${item.qty} = $${item.price * item.qty}%0A`;
-      });
+  let orderText = `New Order from ${name}%0APhone: ${phone}%0APickup: ${time}%0A%0AOrder:%0A`;
+  let total=0;
+  cart.forEach(item=>{
+    orderText += `${item.name} x ${item.qty} = BND ${(item.price*item.qty).toFixed(2)}%0A`;
+    total += item.price*item.qty;
+  });
+  orderText += `%0ATotal: BND ${total.toFixed(2)}`;
 
-      let total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-      orderText += `%0ATotal: $${total}`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${orderText}`,"_blank");
+}
 
-      let url = `https://wa.me/${WHATSAPP_NUMBER}?text=${orderText}`;
-      window.open(url, "_blank");
-    }
-  </script>
+document.addEventListener("DOMContentLoaded", renderMenu);
+</script>
+
 </body>
 </html>
