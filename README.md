@@ -68,8 +68,8 @@ input { width: 100%; margin-bottom: 10px; padding: 8px; border-radius: 6px; bord
 const WHATSAPP_NUMBER = "6738121098"; // Replace with your number
 
 const menuItems = [
-  { id: 1, name: "Sayap Ayam Panggang", price: 6, img: "pictures/chicken_bbq.jpg" },
-  { id: 2, name: "Lamb Skewer", price: 2, img: "https://via.placeholder.com/200x150?text=Beef+BBQ" },
+  { id: 1, name: "Sayap Ayam Panggang", price: 6, img: "pictures/chicken_bbq.png" },
+  { id: 2, name: "Lamb Skewer", price: 1, img: "https://via.placeholder.com/200x150?text=Beef+BBQ" },
   { id: 3, name: "Lamb Chop", price: 6, img: "https://via.placeholder.com/200x150?text=Lamb+BBQ" },
   { id: 4, name: "Tongking Panggang", price: 1, img: "https://www.instagram.com/p/DNNfJAMSVpM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" },
   { id: 4, name: "Drinks", price: 1, img: "https://via.placeholder.com/200x150?text=Drinks" }
