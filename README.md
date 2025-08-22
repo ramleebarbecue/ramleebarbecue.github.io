@@ -112,7 +112,7 @@ nav a:hover { color:orange; }
 </main>
 
 <script>
-const WHATSAPP_NUMBER = "673XXXXXXXX"; // replace with your number
+const WHATSAPP_NUMBER = "6738121098"; // replace with your number
 
 // Menu items
 const menuItems = [
