@@ -71,7 +71,7 @@ const menuItems = [
   { id: 1, name: "Sayap Ayam Panggang", price: 6, img: "https://via.placeholder.com/200x150?text=Chicken+BBQ" },
   { id: 2, name: "Lamb Skewer", price: 1, img: "https://via.placeholder.com/200x150?text=Beef+BBQ" },
   { id: 3, name: "Lamb Chop", price: 6, img: "https://via.placeholder.com/200x150?text=Lamb+BBQ" },
-  { id: 4, name: "Tongking Panggang", price: 1, img: "https://via.placeholder.com/200x150?text=Drinks" },
+  { id: 4, name: "Tongking Panggang", price: 1, img: "https://www.instagram.com/p/DNNfJAMSVpM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" },
   { id: 4, name: "Drinks", price: 1, img: "https://via.placeholder.com/200x150?text=Drinks" }
 ];
 
