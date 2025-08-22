@@ -68,10 +68,11 @@ input { width: 100%; margin-bottom: 10px; padding: 8px; border-radius: 6px; bord
 const WHATSAPP_NUMBER = "6738121098"; // Replace with your number
 
 const menuItems = [
-  { id: 1, name: "Chicken BBQ", price: 5, img: "https://via.placeholder.com/200x150?text=Chicken+BBQ" },
-  { id: 2, name: "Beef BBQ", price: 7, img: "https://via.placeholder.com/200x150?text=Beef+BBQ" },
-  { id: 3, name: "Lamb BBQ", price: 8, img: "https://via.placeholder.com/200x150?text=Lamb+BBQ" },
-  { id: 4, name: "Drinks", price: 2, img: "https://via.placeholder.com/200x150?text=Drinks" }
+  { id: 1, name: "Sayap Ayam Panggang", price: 6, img: "https://via.placeholder.com/200x150?text=Chicken+BBQ" },
+  { id: 2, name: "Lamb Skewer", price: 1, img: "https://via.placeholder.com/200x150?text=Beef+BBQ" },
+  { id: 3, name: "Lamb Chop", price: 6, img: "https://via.placeholder.com/200x150?text=Lamb+BBQ" },
+  { id: 4, name: "Tongking Panggang", price: 1, img: "https://via.placeholder.com/200x150?text=Drinks" },
+  { id: 4, name: "Drinks", price: 1, img: "https://via.placeholder.com/200x150?text=Drinks" }
 ];
 
 let cart = [];
