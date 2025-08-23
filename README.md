@@ -1,218 +1,193 @@
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ramlee Barbecue</title>
-<style>
-/* Reset */
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Segoe UI', Arial, sans-serif; background:#fff; color:#111; line-height:1.6; }
-
-/* Header */
-header { background:#111; color:#fff; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; }
-header h1 { color:orange; font-family:'Arial Black', sans-serif; font-size:1.8rem; }
-nav a { margin-left:1rem; color:#fff; font-weight:bold; transition:.3s; }
-nav a:hover { color:orange; }
-
-/* Container */
-.container { width:90%; max-width:1000px; margin:2rem auto; }
-
-/* Home */
-#home { text-align:center; padding:2rem 0; }
-#home h2 { font-size:2rem; color:#111; margin-bottom:1rem; }
-#home p { font-size:1.1rem; margin-bottom:1.5rem; }
-.button { display:inline-block; background:orange; color:#fff; padding:0.8rem 1.5rem; border-radius:6px; font-weight:bold; transition:0.3s; }
-.button:hover { background:#e65c00; }
-
-/* Menu */
-#menu h2 { text-align:center; margin-bottom:1rem; color:#111; }
-.menu { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; }
-.menu-item { background:#fff; padding:1rem; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.1); text-align:center; position:relative; }
-.menu-item img { width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:0.5rem; }
-.menu-item h3 { margin:0.5rem 0; font-size:1.1rem; }
-.menu-item p { margin-bottom:0.5rem; font-weight:bold; color:#111; }
-.quantity { display:flex; justify-content:center; align-items:center; margin-bottom:0.5rem; }
-.quantity button { width:30px; height:30px; border:none; border-radius:4px; background:orange; color:#fff; font-weight:bold; cursor:pointer; }
-.quantity span { margin:0 10px; min-width:20px; text-align:center; }
-.remark { width:90%; margin:0.5rem auto; padding:5px; border-radius:6px; border:1px solid #ccc; }
-
-/* Cart */
-.cart { background:#fff; padding:1rem; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.05); margin-top:2rem; }
-.cart-items div { margin-bottom:0.5rem; }
-.cart-items strong { display:block; margin-top:0.5rem; }
-
-/* Location */
-#location { text-align:center; padding:2rem 0; }
-#location a { display:inline-block; background:black; color:orange; padding:0.8rem 1.5rem; border-radius:6px; font-weight:bold; margin-top:1rem; transition:0.3s; }
-#location a:hover { background:orange; color:#fff; }
-
-/* Email subscription */
-#subscribe { text-align:center; padding:2rem 0; background:#f5f5f5; border-radius:10px; margin-top:2rem; }
-#subscribe input[type="email"] { padding:0.8rem; width:250px; border-radius:6px; border:1px solid #ccc; margin-right:5px; }
-#subscribe button { padding:0.8rem 1.2rem; background:orange; color:#fff; border:none; border-radius:6px; cursor:pointer; transition:0.3s; }
-#subscribe button:hover { background:#e65c00; }
-
-/* Responsive */
-@media(max-width:600px){ .quantity { flex-direction:row; } }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ramlee Barbecue - Order Online</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .cart-count {
+      display: none;
+    }
+    .cart-count.active {
+      display: inline-block;
+    }
+  </style>
 </head>
-<body>
-
-<header>
-  <h1>Ramlee Barbecue</h1>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#menu">Menu</a>
-    <a href="#location">Location</a>
-    <a href="#subscribe">Subscribe</a>
-  </nav>
-</header>
-
-<main class="container">
-
-<!-- Home -->
-<section id="home">
-  <h2>Welcome to Ramlee Barbecue!</h2>
-  <p>Delicious BBQ meals ready for pickup. Taste the flavor, feel the tradition!</p>
-  <a class="button" href="#menu">Order Now</a>
-</section>
-
-<!-- Menu -->
-<section id="menu">
-  <h2>Our Menu</h2>
-  <div class="menu" id="menuList"></div>
-
-  <div class="cart" id="cart">
-    <h2>Your Cart</h2>
-    <div class="cart-items" id="cartItems"></div>
-    <h3>Customer Info</h3>
-    <input type="text" id="custName" placeholder="Your Name" required>
-    <input type="text" id="custPhone" placeholder="Your Phone" required>
-    <input type="time" id="pickupTime" required>
-    <button onclick="checkout()">Checkout via WhatsApp</button>
-  </div>
-</section>
-
-<!-- Location -->
-<section id="location">
-  <h2>Find Us</h2>
-  <p>Click below to get directions to our shop.</p>
-  <a href="https://www.google.com/maps/dir/?api=1&destination=Brunei+Ramlee+Barbecue" target="_blank">Get Directions</a>
-</section>
-
-<!-- Email Subscription -->
-<section id="subscribe">
-  <h2>Subscribe to Our Newsletter</h2>
-  <p>Get latest updates and promotions</p>
-  <input type="email" id="email" placeholder="Enter your email">
-  <button onclick="subscribe()">Subscribe</button>
-  <p id="subscribeMsg"></p>
-</section>
-
-</main>
-
-<script>
-const WHATSAPP_NUMBER = "6738121098"; // replace with your number
-
-// Menu items
-const menuItems = [
-  { id:1, name:"Chicken BBQ", price:5, img:"images/chicken_bbq.png" },
-  { id:2, name:"Beef BBQ", price:7, img:"images/beef_bbq.png" },
-  { id:3, name:"Lamb BBQ", price:8, img:"images/lamb_bbq.png" },
-  { id:4, name:"Drinks", price:2, img:"images/drinks.png" }
-];
-
-let cart = [];
-
-function renderMenu(){
-  const menuList = document.getElementById("menuList");
-  menuList.innerHTML = "";
-  menuItems.forEach(item=>{
-    const div = document.createElement("div");
-    div.classList.add("menu-item");
-    div.innerHTML = `
-      <img src="${item.img}" alt="${item.name}">
-      <h3>${item.name}</h3>
-      <p>BND ${item.price}</p>
-      <div class="quantity">
-        <button onclick="changeQty(${item.id}, -1)">-</button>
-        <span id="qty-${item.id}">0</span>
-        <button onclick="changeQty(${item.id}, 1)">+</button>
+<body class="bg-gray-100">
+  <!-- Navbar -->
+  <nav class="bg-orange-600 text-white p-4 sticky top-0 z-10 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Ramlee Barbecue</h1>
+      <div class="relative">
+        <button id="cart-btn" class="flex items-center space-x-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span id="cart-count" class="cart-count bg-red-500 text-white rounded-full px-2 py-1 text-xs">0</span>
+        </button>
       </div>
-      <input class="remark" id="remark-${item.id}" placeholder="Add remark">
-      <button onclick="addToCartWithQty(${item.id})">Add to Cart</button>
-    `;
-    menuList.appendChild(div);
-  });
-}
+    </div>
+  </nav>
 
-function changeQty(id, delta){
-  const qtySpan = document.getElementById(`qty-${id}`);
-  let qty = parseInt(qtySpan.innerText);
-  qty += delta;
-  if(qty<0) qty=0;
-  qtySpan.innerText = qty;
-}
+  <!-- Hero Section -->
+  <section class="bg-orange-100 py-12">
+    <div class="container mx-auto flex flex-col md:flex-row items-center">
+      <div class="md:w-1/2 text-center md:text-left">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">Ramlee Barbecue Signature Grilled Wings</h2>
+        <p class="text-gray-600 mb-6">Savor our juicy, smoky grilled chicken wings, crafted with love and the finest spices. Order now and satisfy your cravings!</p>
+        <button class="bg-orange-600 text-white px-6 py-3 rounded-full hover:bg-orange-700 transition">Shop Now</button>
+      </div>
+      <div class="md:w-1/2 mt-6 md:mt-0">
+        <img src="https://via.placeholder.com/500x300?text=Grilled+Wings" alt="Grilled Chicken Wings" class="rounded-lg shadow-lg w-full">
+      </div>
+    </div>
+  </section>
 
-function addToCartWithQty(id){
-  const qty = parseInt(document.getElementById(`qty-${id}`).innerText);
-  if(qty<=0){ alert("Quantity must be at least 1"); return; }
-  const remark = document.getElementById(`remark-${id}`).value;
-  const item = menuItems.find(i=>i.id===id);
-  const cartItem = {...item, qty:qty, remark: remark};
-  const existing = cart.find(i=>i.id===id && i.remark===remark);
-  if(existing) existing.qty += qty;
-  else cart.push(cartItem);
-  renderCart();
-  document.getElementById(`qty-${id}`).innerText = 0;
-  document.getElementById(`remark-${id}`).value = "";
-}
+  <!-- Product Section -->
+  <section class="container mx-auto py-12">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Our Menu</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Product Card -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <img src="https://via.placeholder.com/300x200?text=Signature+Wings" alt="Signature Grilled Wings" class="w-full h-48 object-cover rounded-md mb-4">
+        <h3 class="text-xl font-semibold text-gray-800">Sayap Ayam Panggang</h3>
+        <p class="text-gray-600 mb-4">BND 6.00 (5 pieces)</p>
+        <div class="flex items-center space-x-2 mb-4">
+          <button class="decrease-qty bg-gray-300 text-gray-800 px-3 py-1 rounded">-</button>
+          <input type="number" class="quantity w-16 text-center border rounded" value="1" min="1">
+          <button class="increase-qty bg-gray-300 text-gray-800 px-3 py-1 rounded">+</button>
+        </div>
+        <button class="add-to-cart bg-orange-600 text-white w-full py-2 rounded hover:bg-orange-700 transition">Add to Cart</button>
+      </div><section class="container mx-auto py-12">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Our Menu</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Product Card -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <img src="https://via.placeholder.com/300x200?text=Signature+Wings" alt="Signature Grilled Wings" class="w-full h-48 object-cover rounded-md mb-4">
+        <h3 class="text-xl font-semibold text-gray-800">Tongking Panggang</h3>
+        <p class="text-gray-600 mb-4">BND 6.00 (5 pieces)</p>
+        <div class="flex items-center space-x-2 mb-4">
+          <button class="decrease-qty bg-gray-300 text-gray-800 px-3 py-1 rounded">-</button>
+          <input type="number" class="quantity w-16 text-center border rounded" value="1" min="1">
+          <button class="increase-qty bg-gray-300 text-gray-800 px-3 py-1 rounded">+</button>
+        </div>
+        <button class="add-to-cart bg-orange-600 text-white w-full py-2 rounded hover:bg-orange-700 transition">Add to Cart</button>
+      </div>
+      <!-- Add more products here if needed -->
+    </div>
+  </section>
 
-function renderCart(){
-  const cartDiv = document.getElementById("cartItems");
-  cartDiv.innerHTML="";
-  let total=0;
-  cart.forEach((item,index)=>{
-    total += item.price*item.qty;
-    cartDiv.innerHTML += `<div>${item.name} x ${item.qty} ${item.remark ? "- "+item.remark : ""} = BND ${(item.price*item.qty).toFixed(2)} <button onclick="removeItem(${index})">-</button></div>`;
-  });
-  if(cart.length) cartDiv.innerHTML += `<hr><strong>Total: BND ${total.toFixed(2)}</strong>`;
-  else cartDiv.innerHTML = "<em>Cart is empty</em>";
-}
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-20">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
+      <div id="cart-items" class="mb-4"></div>
+      <p id="cart-total" class="text-lg font-semibold mb-4">Total: RM 0.00</p>
+      <div class="flex justify-between">
+        <button id="close-cart" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Close</button>
+        <button id="checkout-btn" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">Checkout</button>
+      </div>
+    </div>
+  </div>
 
-function removeItem(index){
-  if(cart[index].qty>1) cart[index].qty--;
-  else cart.splice(index,1);
-  renderCart();
-}
+  <script>
+    let cart = [];
 
-function checkout(){
-  if(cart.length===0){ alert("Cart is empty!"); return; }
-  const name = document.getElementById("custName").value;
-  const phone = document.getElementById("custPhone").value;
-  const time = document.getElementById("pickupTime").value;
-  if(!name || !phone || !time){ alert("Fill all details!"); return; }
+    // Update cart count display
+    function updateCartCount() {
+      const cartCount = document.getElementById('cart-count');
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = totalItems;
+      cartCount.classList.toggle('active', totalItems > 0);
+    }
 
-  let orderText = `New Order from ${name}%0APhone: ${phone}%0APickup: ${time}%0A%0AOrder:%0A`;
-  let total=0;
-  cart.forEach(item=>{
-    orderText += `${item.name} x ${item.qty} ${item.remark ? "- "+item.remark : ""} = BND ${(item.price*item.qty).toFixed(2)}%0A`;
-    total += item.price*item.qty;
-  });
-  orderText += `%0ATotal: BND ${total.toFixed(2)}`;
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${orderText}`,"_blank");
-}
+    // Update cart display
+    function updateCartDisplay() {
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      cartItems.innerHTML = '';
+      let total = 0;
 
-// Simple email subscription
-function subscribe(){
-  const email = document.getElementById("email").value;
-  if(!email){ alert("Enter a valid email"); return; }
-  document.getElementById("subscribeMsg").innerText = `Thank you! ${email} subscribed.`;
-  document.getElementById("email").value = "";
-}
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        cartItems.innerHTML += `
+          <div class="flex justify-between items-center mb-2">
+            <div>
+              <p class="font-semibold">${item.name}</p>
+              <p>RM ${item.price.toFixed(2)} x ${item.quantity}</p>
+            </div>
+            <button class="remove-item text-red-500" data-index="${index}">Remove</button>
+          </div>
+        `;
+      });
 
-document.addEventListener("DOMContentLoaded", renderMenu);
-</script>
+      cartTotal.textContent = `Total: RM ${total.toFixed(2)}`;
 
+      // Add event listeners for remove buttons
+      document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', () => {
+          const index = button.dataset.index;
+          cart.splice(index, 1);
+          updateCartDisplay();
+          updateCartCount();
+        });
+      });
+    }
+
+    // Add to cart
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        const card = button.closest('.bg-white');
+        const name = card.querySelector('h3').textContent;
+        const price = parseFloat(card.querySelector('p').textContent.replace('RM ', ''));
+        const quantity = parseInt(card.querySelector('.quantity').value);
+
+        const existingItem = cart.find(item => item.name === name);
+        if (existingItem) {
+          existingItem.quantity += quantity;
+        } else {
+          cart.push({ name, price, quantity });
+        }
+
+        updateCartCount();
+        updateCartDisplay();
+      });
+    });
+
+    // Quantity controls
+    document.querySelectorAll('.increase-qty').forEach(button => {
+      button.addEventListener('click', () => {
+        const input = button.previousElementSibling;
+        input.value = parseInt(input.value) + 1;
+      });
+    });
+
+    document.querySelectorAll('.decrease-qty').forEach(button => {
+      button.addEventListener('click', () => {
+        const input = button.nextElementSibling;
+        if (parseInt(input.value) > 1) {
+          input.value = parseInt(input.value) - 1;
+        }
+      });
+    });
+
+    // Cart modal toggle
+    document.getElementById('cart-btn').addEventListener('click', () => {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+    });
+
+    document.getElementById('close-cart').addEventListener('click', () => {
+      document.getElementById('cart-modal').classList.add('hidden');
+    });
+
+    // Checkout (placeholder)
+    document.getElementById('checkout-btn').addEventListener('click', () => {
+      alert('Proceeding to checkout! (This is a placeholder)');
+    });
+  </script>
 </body>
 </html>
